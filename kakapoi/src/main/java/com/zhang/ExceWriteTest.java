@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -67,5 +68,84 @@ public class ExceWriteTest {
         workbook.write(outputStream);
         outputStream.close();
         System.out.println("kaka.xlsx生成完毕");
+    }
+    //最多65536行
+    @Test
+    public void testWrite03BigData() throws Exception {
+
+        long start = System.currentTimeMillis();
+        //创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        //创建工作表
+        Sheet sheet = workbook.createSheet();
+
+        for (int i = 0; i < 65536; i++) {
+            Row row = sheet.createRow(i);
+            for (int j = 0; j < 10; j++) {
+                Cell cell = row.createCell(j);
+                cell.setCellValue(j);
+            }
+        }
+
+        //生成excel，excel03结尾是xls
+        FileOutputStream outputStream = new FileOutputStream(path + "kaka03BigData.xls");
+        workbook.write(outputStream);
+        outputStream.close();
+        System.out.println("kaka03BigData.xls生成完毕");
+        long end = System.currentTimeMillis();
+        System.out.println((end - start) / 1000);
+    }
+    //耗时较长，可以写入1048576
+    @Test
+    public void testWrite07BigData() throws Exception {
+
+        long start = System.currentTimeMillis();
+        //创建工作簿
+        Workbook workbook = new XSSFWorkbook();
+        //创建工作表
+        Sheet sheet = workbook.createSheet();
+
+        for (int i = 0; i < 65536; i++) {
+            Row row = sheet.createRow(i);
+            for (int j = 0; j < 10; j++) {
+                Cell cell = row.createCell(j);
+                cell.setCellValue(j);
+            }
+        }
+
+        //生成excel，excel03结尾是xls
+        FileOutputStream outputStream = new FileOutputStream(path + "kaka07BigData.xlsx");
+        workbook.write(outputStream);
+        outputStream.close();
+        System.out.println("kaka07BigData.xlsx生成完毕");
+        long end = System.currentTimeMillis();
+        System.out.println((end - start) / 1000);
+    }
+    @Test
+    public void testWrite07BigDataSuper() throws Exception {
+
+        long start = System.currentTimeMillis();
+        //创建工作簿
+        Workbook workbook = new SXSSFWorkbook();
+        //创建工作表
+        Sheet sheet = workbook.createSheet();
+
+        for (int i = 0; i < 100000; i++) {
+            Row row = sheet.createRow(i);
+            for (int j = 0; j < 10; j++) {
+                Cell cell = row.createCell(j);
+                cell.setCellValue(j);
+            }
+        }
+
+        //生成excel，excel03结尾是xls
+        FileOutputStream outputStream = new FileOutputStream(path + "kaka07BigDataSuper.xlsx");
+        workbook.write(outputStream);
+        outputStream.close();
+        System.out.println("kaka07BigDataSuper.xlsx生成完毕");
+        //清除临时文件
+        ((SXSSFWorkbook)workbook).dispose();
+        long end = System.currentTimeMillis();
+        System.out.println((end - start) / 1000);
     }
 }
