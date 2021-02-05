@@ -9,15 +9,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class TestGenerateData {
 
 
     private List<DemoData> data() {
         List<DemoData> list = new ArrayList<DemoData>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             DemoData data = new DemoData();
-            data.setString("字符串" + i);
+            data.setString("卡卡" + i + "-" + UUID.randomUUID().toString().substring(0,4));
             data.setDate(new Date());
             data.setDoubleData(0.56);
             list.add(data);
@@ -25,7 +26,8 @@ public class TestGenerateData {
         return list;
     }
 
-    String path = "D:\\Idea-Workspace\\excel-test\\kakapoi\\";
+//    String path = "D:\\Idea-Workspace\\excel-test\\kakapoi\\";
+    String path = "E:\\develop\\kaka-excel\\kakapoi\\";
     /**
      * 最简单的写
      * <p>1. 创建excel对应的实体对象 参照{@link DemoData}
